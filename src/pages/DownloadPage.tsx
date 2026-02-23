@@ -34,7 +34,7 @@ export default function DownloadPage() {
       icon: <FaWindows className="size-8" />,
       description: "Windows 10/11 (64-bit)",
       action: "Download .exe",
-      href: "#",
+      href: "download.ignite-chat.com/windows",
       featured: true,
     },
     {
@@ -42,7 +42,7 @@ export default function DownloadPage() {
       icon: <FaApple className="size-8" />,
       description: "macOS 12+ (Universal)",
       action: "Download .dmg",
-      href: "#",
+      href: "download.ignite-chat.com/mac",
       featured: false,
     },
     {
@@ -50,7 +50,7 @@ export default function DownloadPage() {
       icon: <FaLinux className="size-8" />,
       description: "Debian, Ubuntu, Flatpak",
       action: "Download .deb",
-      href: "#",
+      href: "download.ignite-chat.com/linux",
       featured: false,
     },
   ];

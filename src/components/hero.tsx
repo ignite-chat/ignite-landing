@@ -1,22 +1,37 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { motion } from "framer-motion";
 import { Monitor } from "lucide-react";
+import { FaWindows, FaApple, FaLinux } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
+function getOS(): string {
+  const userAgent = navigator.userAgent.toLowerCase();
+  if (userAgent.includes("win")) return "Windows";
+  if (userAgent.includes("mac")) return "macOS";
+  if (userAgent.includes("linux")) return "Linux";
+  return "Desktop";
+}
+
+const osIcons: Record<string, React.ReactNode> = {
+  Windows: <FaWindows className="size-6" />,
+  macOS: <FaApple className="size-6" />,
+  Linux: <FaLinux className="size-6" />,
+  Desktop: <Monitor className="size-6" />,
+};
+
 export default function Hero() {
+  const [os, setOS] = useState("Desktop");
+
+  useEffect(() => {
+    setOS(getOS());
+  }, []);
+
   return (
-    <div className="relative w-full overflow-hidden min-h-dvh flex flex-col justify-center bg-white dark:bg-black pt-20">
+    <div className="relative w-full overflow-hidden min-h-dvh flex flex-col justify-center bg-white dark:bg-black">
       {/* Spotlight Effect */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
         <svg
@@ -73,15 +88,15 @@ export default function Hero() {
         )}
       />
 
-      <section className="relative z-10 max-w-7xl mx-auto px-6 py-12 md:py-24 flex flex-col items-start text-left w-full">
+      <section className="relative z-10 max-w-7xl mx-auto px-6 py-12 md:py-24 flex flex-col items-center text-center w-full">
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="flex flex-col items-start space-y-8 max-w-4xl"
+          className="flex flex-col items-center space-y-8 max-w-4xl"
         >
           {/* Badge */}
-          <Link 
+          <Link
             to="/download"
             className="w-fit h-full text-[10px] bg-white/50 dark:bg-zinc-900/40 backdrop-blur-md px-3 py-1.5 border border-black/5 dark:border-white/5 rounded-full flex items-center gap-2 shadow-sm dark:shadow-2xl hover:bg-black/5 dark:hover:bg-zinc-800/60 hover:border-black/10 dark:hover:border-white/10 transition-all group/badge"
           >
@@ -101,43 +116,28 @@ export default function Hero() {
           </h1>
 
           <p className="max-w-xl text-lg text-muted-foreground leading-relaxed font-medium">
-            Ignite is the easiest way to talk over voice, video, and text. 
+            Ignite is the easiest way to talk over voice, video, and text.
             Create your own community, join existing ones, and stay connected with the people who matter most.
           </p>
 
-          {/* Liquid Glass Buttons */}
+          {/* CTA Buttons */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="flex flex-col sm:flex-row items-center justify-start gap-4 pt-2"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2"
           >
-            <Button 
+            <Button
                 asChild
                 variant="default"
                 className="h-11 px-8 rounded-md bg-orange-600 dark:bg-primary hover:bg-orange-700 dark:hover:bg-orange-600 text-white"
             >
-              <Link to="/download">Get Started</Link>
+              <Link to="/download" className="flex items-center gap-2">{osIcons[os]} Download for {os}</Link>
             </Button>
-            
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline" className="h-11 px-6 bg-white border border-black/10 text-black shadow-sm hover:bg-zinc-50 dark:bg-white/[0.03] dark:border-white/10 dark:text-white dark:hover:bg-white/5 transition-colors">
-                  Already have an account?
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="border-black/5 dark:border-white/5 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-3xl text-foreground">
-                <DialogHeader>
-                  <DialogTitle className="text-2xl font-bold">Welcome Back</DialogTitle>
-                  <DialogDescription className="text-muted-foreground">
-                    Log in to your Ignite account to continue connecting with your communities.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="flex flex-col gap-4 py-4">
-                  <Button className="w-full h-12">Log In</Button>
-                </div>
-              </DialogContent>
-            </Dialog>
+
+            <Button asChild variant="outline" className="h-11 px-6 bg-white border border-black/10 text-black shadow-sm hover:bg-zinc-50 dark:bg-white/[0.03] dark:border-white/10 dark:text-white dark:hover:bg-white/5 transition-colors">
+              <Link to="https://app.ignite-chat.com">Open in Browser</Link>
+            </Button>
           </motion.div>
         </motion.div>
       </section>
